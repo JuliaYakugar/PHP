@@ -27,3 +27,121 @@ $a = $a + $b;
 $b = $a - $b;
 $a = $a - $b;
 echo('<br/>' . 'Конечные значения: $a = ' . $a . ', $b = ' . $b );
+
+// Урок 2
+// 1. Реализовать основные 4 арифметические операции в виде функции с тремя параметрами – два параметра это числа, третий – операция. Обязательно использовать оператор return.
+
+function add($arg1, $arg2) {
+    return $arg1 + $arg2;
+}
+
+function sub($arg1, $arg2) {
+    return $arg1 - $arg2;
+}
+
+function mult($arg1, $arg2) {
+    return $arg1 * $arg2;
+}
+
+function div($arg1, $arg2) {
+    return $arg1 / $arg2;
+}
+
+// 2. Реализовать функцию с тремя параметрами: function mathOperation($arg1, $arg2, $operation), где $arg1, $arg2 – значения аргументов, $operation – строка с названием операции. В зависимости от переданного значения операции выполнить одну из арифметических операций (использовать функции из пункта 3) и вернуть полученное значение (использовать switch).
+
+function mathOperation($arg1, $arg2, $operation) {
+    switch ($operation) {
+        case '+':
+            return add($arg1, $arg2);
+        case '-':
+            return sub($arg1, $arg2);
+        case '*':
+            return mult($arg1, $arg2);
+        case '/':
+            return div($arg1, $arg2);
+        default:
+            return "Нет такой операции";
+    }
+}
+
+echo '<br>' . "Урок 2" . '<br>';
+echo mathOperation(10, 5, '+') . '<br>'; 
+
+// 3. Объявить массив, в котором в качестве ключей будут использоваться названия областей, а в качестве значений – массивы с названиями городов из соответствующей области. Вывести в цикле значения массива, чтобы результат был таким: Московская область: Москва, Зеленоград, Клин Ленинградская область: Санкт-Петербург, Всеволожск, Павловск, Кронштадт Рязанская область … (названия городов можно найти на maps.yandex.ru).
+
+$regions = [
+    'Московская область' => ['Москва', 'Зеленоград'],
+    'Ленинградская область' => ['Санкт-Петербург', 'Всеволожск', 'Павловск'],
+    'Самарская область' => ['Самара', 'Тольятти']
+];
+
+foreach ($regions as $region => $cities) {
+    echo $region . ': ';
+    foreach ($cities as $city) {
+        echo $city . ' ';
+    };
+    echo '<br>';
+}
+
+// 4. Объявить массив, индексами которого являются буквы русского языка, а значениями – соответствующие латинские буквосочетания (‘а’=> ’a’, ‘б’ => ‘b’, ‘в’ => ‘v’, ‘г’ => ‘g’, …, ‘э’ => ‘e’, ‘ю’ => ‘yu’, ‘я’ => ‘ya’). Написать функцию транслитерации строк.
+
+$translit = [
+    'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'yo', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'y', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f', 'х' => 'kh', 'ц' => 'ts', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'shch', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya'
+];
+
+function transliterate($string, $translit) {
+    $result = '';
+    for ($i = 0; $i < mb_strlen($string); $i++) {
+        $result .= $translit[mb_substr($string, $i, 1)];
+    }
+    return $result;
+}
+
+echo transliterate('привет', $translit) . '<br>';
+
+// 5. *С помощью рекурсии организовать функцию возведения числа в степень. Формат: function power($val, $pow), где $val – заданное число, $pow – степень.
+
+function power($val, $pow) {
+    if ($pow == 0) {
+        return 1;
+    }
+
+    if ($pow < 0) {
+        return 1 / power($val, -$pow);
+    }
+
+    return $val * power($val, $pow - 1);
+}
+
+echo power(2, 3) . '<br>';
+echo power(10, 0) . '<br>';
+
+// 6. *Написать функцию, которая вычисляет текущее время и возвращает его в формате с правильными склонениями, например:
+// 22 часа 15 минут
+// 21 час 43 минуты.
+
+function getCurrentTime($time) {
+    $timeArray = explode(':', $time);
+    $hours = (int)$timeArray[0];
+    $minutes = (int)$timeArray[1];
+
+    if ($hours % 10 == 1 && $hours != 11) {
+        $hoursDeclension = 'час';
+    } elseif ($hours % 10 >= 2 && $hours % 10 <= 4 && ($hours < 10 || $hours > 20)) {
+        $hoursDeclension = 'часа';
+    } else {
+        $hoursDeclension = 'часов';
+    }
+
+    if ($minutes % 10 == 1 && $minutes != 11) {
+        $minutesDeclension = 'минута';
+    } elseif ($minutes % 10 >= 2 && $minutes % 10 <= 4 && ($minutes < 10 || $minutes > 20)) {
+        $minutesDeclension = 'минуты';
+    } else {
+        $minutesDeclension = 'минут';
+    }
+
+    return $hours . ' ' . $hoursDeclension . ' ' . $minutes . ' ' . $minutesDeclension;
+}
+
+echo getCurrentTime('12:03') . '<br>';
