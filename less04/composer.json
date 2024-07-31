@@ -1,0 +1,9 @@
+{
+    "name": "umete/less04",
+    "autoload": {
+        "psr-4": {
+            "umete\\less04\\": "src/"
+        }
+    },
+    "require": {}
+}
